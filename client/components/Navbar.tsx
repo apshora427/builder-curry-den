@@ -119,26 +119,43 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Center: Clean Navigation */}
+        {/* Center: Navigation with Amazing Active Effects */}
         <div className="hidden md:flex items-center space-x-1">
           {getCurrentNavItems().map((item) => {
             const isActive = location.pathname === item.to;
             const Icon = item.icon;
-            
+
             return (
               <Link
                 key={item.to}
                 to={item.to}
                 className={`
-                  flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                  ${isActive 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  group relative flex items-center space-x-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-out
+                  ${isActive
+                    ? `bg-gradient-to-r ${getLayerColor(currentLayer)}/15 text-primary border border-primary/20 shadow-lg shadow-primary/20`
+                    : 'text-muted-foreground hover:text-foreground hover:bg-gradient-to-r hover:from-primary/5 hover:via-purple-500/5 hover:to-primary/5'
                   }
                 `}
               >
-                <Icon className="h-4 w-4" />
-                <span>{item.label}</span>
+                {/* Amazing Active Glow Effect */}
+                {isActive && (
+                  <>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${getLayerColor(currentLayer)}/20 rounded-xl animate-pulse blur-sm`} />
+                    <div className={`absolute inset-0 bg-gradient-to-r ${getLayerColor(currentLayer)}/10 rounded-xl`} />
+                  </>
+                )}
+
+                {/* Hover glow effect */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm" />
+
+                {/* Icon with cool animation */}
+                <Icon className={`
+                  h-4 w-4 relative z-10 transition-all duration-300
+                  ${isActive ? 'text-primary scale-110' : 'group-hover:scale-110 group-hover:rotate-6'}
+                `} />
+
+                {/* Label */}
+                <span className="relative z-10">{item.label}</span>
               </Link>
             );
           })}
